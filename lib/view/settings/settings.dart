@@ -15,7 +15,18 @@ class Settings extends StatelessWidget {
         child: Column(
           children: [
             ListTile(
-              leading: const CircleAvatar(),
+              leading: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 5),
+                child: CircleAvatar(
+                  radius: 30.0,
+                  child: ClipOval(
+                    child: Image.asset(
+                      "assets/images/person.jpg",
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+              ),
               title: const Text("heloooo"),
               subtitle: const Text("sssssss"),
               trailing:

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todo_task/constants/validators.dart'; // Ensure validators are imported
 import 'package:todo_task/controller/Authentication/bloc/authentication_bloc.dart';
 import 'package:todo_task/view/forgotpassword/ForgotPassword.dart';
 import 'package:todo_task/view/home/home.dart';
@@ -13,6 +14,8 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passController = TextEditingController();
+  final formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AuthenticationBloc, AuthenticationState>(
@@ -22,6 +25,16 @@ class _LoginScreenState extends State<LoginScreen> {
             context,
             MaterialPageRoute(builder: (context) => Home()),
           );
+        } else if (state is NavigationDoneRegisterScreenState) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const RegisterScreen()),
+          );
+        } else if (state is NavigationDoneForgotPasswrodScreenState) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const Forgotpassword()),
+          );
         }
       },
       builder: (context, state) {
@@ -29,96 +42,104 @@ class _LoginScreenState extends State<LoginScreen> {
           body: SafeArea(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                children: [
-                  const Spacer(flex: 2),
-                  TextField(
-                    controller: _emailController,
-                    decoration: const InputDecoration(
-                      labelText: "Email",
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  TextField(
-                    controller: _passController,
-                    decoration: const InputDecoration(
-                      labelText: "Password",
-                      border: OutlineInputBorder(),
-                    ),
-                    obscureText: true,
-                  ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const Forgotpassword()),
-                        );
-                      },
-                      child: const Text(
-                        "Forgot Password?",
-                        style: TextStyle(color: Colors.black),
+              child: Form(
+                key: formKey,
+                child: Column(
+                  children: [
+                    const Spacer(flex: 2),
+                    // Email Field
+                    TextFormField(
+                      controller: _emailController,
+                      validator: emailValidate, // Email validator
+                      decoration: const InputDecoration(
+                        labelText: "Email",
+                        border: OutlineInputBorder(),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: () {
-                      if (_emailController.text.isNotEmpty &&
-                          _passController.text.isNotEmpty) {
-                        BlocProvider.of<AuthenticationBloc>(context).add(
-                          LoginButtonClickedEvent(
-                              email: _emailController.text,
-                              password: _passController.text),
-                        );
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue,
-                      minimumSize: const Size(double.infinity, 60),
-                      shape: const RoundedRectangleBorder(),
-                    ),
-                    child: const Text(
-                      "CONTINUE",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
+                    const SizedBox(height: 20),
+
+                    // Password Field
+                    TextFormField(
+                      controller: _passController,
+                      validator: passwordValidate, // Password validator
+                      decoration: const InputDecoration(
+                        labelText: "Password",
+                        border: OutlineInputBorder(),
                       ),
+                      obscureText: true,
                     ),
-                  ),
-                  const SizedBox(height: 20),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const RegisterScreen()),
-                      );
-                    },
-                    child: const Center(
-                      child: Text.rich(
-                        TextSpan(
-                          text: "Don't have an account? ",
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const Forgotpassword()),
+                          );
+                        },
+                        child: const Text(
+                          "Forgot Password?",
                           style: TextStyle(color: Colors.black),
-                          children: [
-                            TextSpan(
-                              text: "Register",
-                              style: TextStyle(
-                                color: Colors.blue,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
                         ),
                       ),
                     ),
-                  ),
-                  const Spacer(flex: 1),
-                ],
+                    const SizedBox(height: 20),
+
+                    // Login Button
+                    ElevatedButton(
+                      onPressed: () {
+                        if (formKey.currentState!.validate()) {
+                          BlocProvider.of<AuthenticationBloc>(context).add(
+                            LoginButtonClickedEvent(
+                              email: _emailController.text,
+                              password: _passController.text,
+                            ),
+                          );
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color.fromARGB(255, 11, 86, 147),
+                        minimumSize: const Size(double.infinity, 60),
+                        shape: const RoundedRectangleBorder(),
+                      ),
+                      child: const Text(
+                        "CONTINUE",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+
+                    GestureDetector(
+                      onTap: () {
+                        BlocProvider.of<AuthenticationBloc>(context)
+                            .add(NavigateToRegisterScreenEvent());
+                      },
+                      child: const Center(
+                        child: Text.rich(
+                          TextSpan(
+                            text: "Don't have an account? ",
+                            style: TextStyle(color: Colors.black),
+                            children: [
+                              TextSpan(
+                                text: "Register",
+                                style: TextStyle(
+                                  color: Colors.blue,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    const Spacer(flex: 1),
+                  ],
+                ),
               ),
             ),
           ),

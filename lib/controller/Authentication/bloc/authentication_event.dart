@@ -11,3 +11,20 @@ class LoginButtonClickedEvent extends AuthenticationEvent {
     required this.password,
   });
 }
+
+class NavigateToRegisterScreenEvent extends AuthenticationEvent {}
+
+class NavigateToForgotPasswordScreen extends AuthenticationEvent {}
+
+class BackButtonPressedEvent extends AuthenticationEvent {}
+
+class RegisterButtonClickedEvent extends AuthenticationEvent {
+  final String name;
+  final String email;
+  final String password;
+  RegisterButtonClickedEvent({
+    required this.name,
+    required this.email,
+    required this.password,
+  });
+}
