@@ -151,7 +151,10 @@ class _HomeState extends State<Home> {
                 actions: const [
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 5),
-                    child: Icon(Icons.search),
+                    child: Icon(
+                      Icons.search,
+                      size: 30,
+                    ),
                   ),
                 ],
               ),
@@ -173,23 +176,23 @@ class _HomeState extends State<Home> {
                         itemCount: notes.length,
                         itemBuilder: (context, index) {
                           final note = notes[index];
-                          return Card(
-                            margin: const EdgeInsets.only(bottom: 20),
-                            color: Colors.white,
-                            elevation: 3,
-                            shape: const RoundedRectangleBorder(),
-                            child: Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (BuildContext context) =>
-                                          EditScreen(note: note),
-                                    ),
-                                  );
-                                },
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      EditScreen(note: note),
+                                ),
+                              );
+                            },
+                            child: Card(
+                              margin: const EdgeInsets.only(bottom: 20),
+                              color: Colors.white,
+                              elevation: 3,
+                              shape: const RoundedRectangleBorder(),
+                              child: Padding(
+                                padding: const EdgeInsets.all(10.0),
                                 child: SizedBox(
                                   child: Column(
                                     crossAxisAlignment:

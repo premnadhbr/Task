@@ -19,7 +19,7 @@ class _EditScreenState extends State<EditScreen> {
   @override
   void initState() {
     super.initState();
-    _titleController = TextEditingController(text: widget.note!.title);
+    _titleController = TextEditingController(text: widget.note?.title ?? '');
     tasksController = TextEditingController();
     tasks = List<String>.from(widget.note?.tasks ?? []);
   }
