@@ -121,8 +121,29 @@ class _HomeState extends State<Home> {
             final List<Note> notes = notesState.notes;
             return Scaffold(
               appBar: AppBar(
-                title: const Text("Categories"),
+                title: const Text(
+                  "Categories",
+                  style: TextStyle(fontSize: 20),
+                ),
                 centerTitle: true,
+                leading: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 5),
+                  child: CircleAvatar(
+                    radius: 30.0,
+                    child: ClipOval(
+                      child: Image.asset(
+                        "assets/images/person.jpg",
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                ),
+                actions: const [
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 5),
+                    child: Icon(Icons.search),
+                  ),
+                ],
               ),
               body: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
