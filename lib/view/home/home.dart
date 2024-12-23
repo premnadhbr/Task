@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_task/controller/home/bloc/home_bloc.dart';
+import 'package:todo_task/view/settings/settings.dart';
 
 import '../../model/notes/notes.dart';
 import '../editScreen/editScreen.dart';
@@ -128,12 +129,21 @@ class _HomeState extends State<Home> {
                 centerTitle: true,
                 leading: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 5),
-                  child: CircleAvatar(
-                    radius: 30.0,
-                    child: ClipOval(
-                      child: Image.asset(
-                        "assets/images/person.jpg",
-                        fit: BoxFit.cover,
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(
+                        builder: (context) {
+                          return const Settings();
+                        },
+                      ));
+                    },
+                    child: CircleAvatar(
+                      radius: 30.0,
+                      child: ClipOval(
+                        child: Image.asset(
+                          "assets/images/person.jpg",
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
                   ),
